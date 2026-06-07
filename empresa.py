@@ -1,21 +1,23 @@
 from dados import cadastrar_clientes, alterar_status
-from relatorio import listar_clientes, pesquisar_chamado
+from relatorio import listar_clientes, pesquisar_chamado, relatorio_financeiro
 from acoes import lancar_tecnico, excluir_chamado
 import storage
 
+
 class Empresa:
-#listar, pesquisar, cadastrar, alterar status, excluir chamado, enviar técnico
-#dividir em mais 3 arquivos py: além cliente.py, empresa.py, main.py, colocar o relatório.py, ações.py, dados.py
-#decomposição -> func de cadastrar cliente e alterar status da pra por em um arquivo só de DADOS separado.
+    # listar, pesquisar, cadastrar, alterar status, excluir chamado, enviar técnico
+    # decomposição: as funções ficam separadas em dados.py, relatorio.py e acoes.py
 
     def __init__(self):
         storage.init_db()
         self.clientes = []
         self.indice = {}
-        # carregar clientes do banco
+
+        # Carrega os clientes salvos no banco de dados SQLite.
         rows = storage.load_all_clients()
         max_chamado = 0
         from cliente import Cliente
+
         for r in rows:
             cliente = Cliente(
                 r.get("nome"),
@@ -37,6 +39,7 @@ class Empresa:
             cliente.status = r.get("status") or cliente.status
             self.clientes.append(cliente)
             self.indice[cliente.chamado] = cliente
+
             if cliente.chamado and cliente.chamado > max_chamado:
                 max_chamado = cliente.chamado
 
@@ -48,15 +51,14 @@ class Empresa:
     def alterar_status(self):
         alterar_status(self)
 
-    #decomposição -> arquivo de relatório : listagem e pesquisar e pesquisar separado para um de RELATÓRIO.py
-
     def listar_clientes(self):
         listar_clientes(self)
 
     def pesquisar_chamado(self):
         pesquisar_chamado(self)
 
-    #decomposição de enviar técnico ou exlcuir chamado para um arquivo só de AÇÕES.py            
+    def relatorio_financeiro(self):
+        relatorio_financeiro(self)
 
     def lancar_tecnico(self):
         lancar_tecnico(self)

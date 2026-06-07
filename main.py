@@ -8,10 +8,11 @@ def menu():
         print("\nSISTEMA DE HELP DESK")
         print("1. Cadastrar cliente")
         print("2. Total de clientes")
-        print("3. Enviar tecnico")
+        print("3. Enviar técnico")
         print("4. Pesquisar chamado")
         print("5. Alterar status do chamado")
         print("6. Excluir chamado")
+        print("7. Relatório financeiro")
         print("0. Sair")
 
         opcao = input("Escolha uma opção: ")
@@ -29,6 +30,8 @@ def menu():
                 empresa.alterar_status()
             case "6":
                 empresa.excluir_chamado()
+            case "7":
+                empresa.relatorio_financeiro()
             case "0":
                 print("\nSistema Encerrado.")
                 break
