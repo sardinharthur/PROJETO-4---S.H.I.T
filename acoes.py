@@ -2,7 +2,7 @@ import storage
 
 
 def lancar_tecnico(self):
-    if len(self.clientes) == 0:
+    if not self.clientes:
         print("\nNenhum cliente cadastrado.")
         return
 
@@ -13,14 +13,7 @@ def lancar_tecnico(self):
         except ValueError:
             print("\nDigite apenas números.\n")
 
-    cliente = None
-    try:
-        cliente = self.indice.get(chamado)
-    except Exception:
-        for c in self.clientes:
-            if c.chamado == chamado:
-                cliente = c
-                break
+    cliente = self.indice.get(chamado)
 
     if cliente is None:
         print(f"\nChamado {chamado} não encontrado.")
@@ -39,15 +32,19 @@ def lancar_tecnico(self):
     cliente.status = "Técnico enviado"
 
     try:
-        storage.update_cliente(chamado, tecnico=cliente.tecnico, status=cliente.status)
+        storage.update_cliente(
+            chamado,
+            tecnico=cliente.tecnico,
+            status=cliente.status
+        )
     except Exception:
-        print("Aviso: não foi possível atualizar o chamado no banco de dados.")
+        print("\nAviso: não foi possível atualizar o chamado no banco de dados.")
 
     print("\nTécnico enviado com sucesso.")
 
 
 def excluir_chamado(self):
-    if len(self.clientes) == 0:
+    if not self.clientes:
         print("\nNenhum cliente cadastrado.")
         return
 
@@ -58,25 +55,21 @@ def excluir_chamado(self):
         except ValueError:
             print("\nDigite apenas números.\n")
 
-    cliente = None
-    try:
-        cliente = self.indice.get(chamado)
-    except Exception:
-        for c in self.clientes:
-            if c.chamado == chamado:
-                cliente = c
-                break
+    cliente = self.indice.get(chamado)
 
     if cliente is None:
         print(f"\nChamado {chamado} não encontrado.")
         return
 
-    print("\nDados do chamado a ser excluído: ")
+    print("\nDados do chamado a ser excluído:")
     cliente.exibir_dados()
-    confirmacao = input("\nDeseja realmente excluir este chamado? (SIM/NAO): ").strip().upper()
+
+    confirmacao = input(
+        "\nDeseja realmente excluir este chamado? (SIM/NAO ou S/N): "
+    ).strip().upper()
 
     match confirmacao:
-        case "SIM":
+        case "SIM" | "S":
             try:
                 self.clientes.remove(cliente)
             except ValueError:
@@ -84,17 +77,20 @@ def excluir_chamado(self):
 
             try:
                 del self.indice[chamado]
-            except Exception:
+            except KeyError:
                 pass
 
             try:
                 storage.delete_cliente(chamado)
             except Exception:
-                print("Aviso: não foi possível excluir o chamado do banco de dados.")
+                print("\nAviso: não foi possível excluir o chamado do banco de dados.")
 
             print(f"\nChamado {chamado} excluído com sucesso.")
-        case "NAO":
+
+        case "NAO" | "NÃO" | "N":
             print("\nExclusão cancelada.")
+
         case _:
             print("\nOpção inválida. Exclusão cancelada.")
+
     return
