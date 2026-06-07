@@ -1,7 +1,8 @@
 import sqlite3
 from typing import List, Dict, Any
+from pathlib import Path
 
-DB_PATH = "helpdesk.db"
+DB_PATH = Path(__file__).resolve().parent / "helpdesk.db"
 
 
 def _connect():
