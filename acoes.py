@@ -73,10 +73,10 @@ def excluir_chamado(self):
 
     print("\nDados do chamado a ser excluído: ")
     cliente.exibir_dados()
-    confirmacao = input("\nDeseja realmente excluir este chamado? (Y/N): ").strip().upper()
+    confirmacao = input("\nDeseja realmente excluir este chamado? (SIM/NAO): ").strip().upper()
 
     match confirmacao:
-        case "Y":
+        case "SIM":
             try:
                 self.clientes.remove(cliente)
             except ValueError:
@@ -93,7 +93,7 @@ def excluir_chamado(self):
                 print("Aviso: não foi possível excluir o chamado do banco de dados.")
 
             print(f"\nChamado {chamado} excluído com sucesso.")
-        case "N":
+        case "NAO":
             print("\nExclusão cancelada.")
         case _:
             print("\nOpção inválida. Exclusão cancelada.")
